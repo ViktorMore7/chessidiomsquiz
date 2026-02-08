@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Idioms IQ Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --wood-dark: #5d4037;
+            --wood-light: #8d6e63;
+            --cream: #f5f0e8;
+            --ink: #1a1a1a;
+            --accent-gold: #d4a574;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+        }
+        
+        .serif {
+            font-family: 'Crimson Text', serif;
+        }
+        
+        .chess-pattern {
+            background-image: 
+                linear-gradient(45deg, #333 25%, transparent 25%),
+                linear-gradient(-45deg, #333 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #333 75%),
+                linear-gradient(-45deg, transparent 75%, #333 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+        
+        .wood-texture {
+            background: linear-gradient(135deg, #5d4037 0%, #4e342e 50%, #3e2723 100%);
+        }
+        
+        .option-card {
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+        
+        .option-card:hover:not(.disabled) {
+            border-color: var(--accent-gold);
+            transform: translateX(4px);
+        }
+        
+        .option-card.selected {
+            border-color: var(--wood-dark);
+            background: rgba(93, 64, 55, 0.08);
+        }
+        
+        .option-card.correct {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .option-card.incorrect {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+        
+        .section-card {
+            transition: all 0.3s ease;
+        }
+        
+        .section-card.active {
+            background: linear-gradient(135deg, var(--wood-dark), var(--wood-light));
+            color: white;
+        }
+        
+        .king-crown {
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .shake {
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .score-circle {
+            background: conic-gradient(var(--accent-gold) var(--score-deg), #e5e7eb var(--score-deg));
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="wood-texture text-white py-6 shadow-lg">
+        <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center king-crown">
+                    <i data-lucide="crown" class="w-7 h-7 text-yellow-300"></i>
+                </div>
+                <div>
+                    <h1 class="serif text-2xl font-bold tracking-wide">Chess Idioms IQ</h1>
+                    <p class="text-amber-200 text-sm">The Ultimate Linguistic Tournament</p>
+                </div>
+            </div>
+            <button id="infoBtn" class="p-2 rounded-lg hover:bg-white/10 transition">
+                <i data-lucide="info" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        
+        <!-- Intro Screen -->
+        <section id="introScreen" class="text-center py-12">
+            <div class="mb-8">
+                <div class="w-24 h-24 mx-auto bg-gradient-to-br from-amber-100 to-amber-200 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                    <i data-lucide="chess-king" class="w-12 h-12 text-amber-800"></i>
+                </div>
+                <h2 class="serif text-4xl font-bold text-gray-800 mb-4">Master the Language of Strategy</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                    Welcome to a comprehensive exploration of how the ancient game of chess has enriched the English language. 
+                    From classic checkmates to grandmaster gambits, test your knowledge of 40 strategic expressions that power our daily conversations.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto mb-8">
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-amber-100">
+                    <div class="flex items-center gap-2 mb-2 text-amber-700">
+                        <i data-lucide="target" class="w-5 h-5"></i>
+                        <span class="font-semibold">40 Questions</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Four strategic sections of increasing difficulty</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-amber-100">
+                    <div class="flex items-center gap-2 mb-2 text-amber-700">
+                        <i data-lucide="book-open" class="w-5 h-5"></i>
+                        <span class="font-semibold">45+ Idioms</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Complete master list with definitions included</p>
+                </div>
+            </div>
+
+            <button id="startBtn" class="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-semibold py-4 px-10 rounded-xl text-lg shadow-lg transition transform hover:scale-105 flex items-center gap-3 mx-auto">
+                <i data-lucide="play" class="w-5 h-5"></i>
+                Begin Your Tournament
+            </button>
+        </section>
+
+        <!-- Quiz Screen -->
+        <section id="quizScreen" class="hidden">
+            <!-- Progress -->
+            <div class="mb-6">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                    <span>Progress</span>
+                    <span id="progressText">Question 1 of 40</span>
+                </div>
+                <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="progressBar" class="h-full bg-gradient-to-r from-amber-600 to-amber-700 progress-bar" style="width: 2.5%"></div>
+                </div>
+            </div>
+
+            <!-- Section Indicator -->
+            <div class="flex gap-2 mb-6 flex-wrap">
+                <div class="section-card active px-3 py-1 rounded-full text-xs font-medium" data-section="1">
+                    <i data-lucide="sword" class="w-3 h-3 inline mr-1"></i>
+                    Classic Checkmates
+                </div>
+                <div class="section-card bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-medium" data-section="2">
+                    <i data-lucide="git-branch" class="w-3 h-3 inline mr-1"></i>
+                    Middlegame Manoeuvres
+                </div>
+                <div class="section-card bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-medium" data-section="3">
+                    <i data-lucide="flag" class="w-3 h-3 inline mr-1"></i>
+                    Endgame Expressions
+                </div>
+                <div class="section-card bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-medium" data-section="4">
+                    <i data-lucide="crown" class="w-3 h-3 inline mr-1"></i>
+                    Grandmaster's Gambit
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div id="questionCard" class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-6 fade-in">
+                <div class="flex items-start gap-4 mb-6">
+                    <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <span id="questionNum" class="text-white font-bold text-lg">1</span>
+                    </div>
+                    <div>
+                        <p id="hintText" class="text-amber-600 text-sm mb-1 hidden">
+                            <i data-lucide="alert-circle" class="w-4 h-4 inline mr-1"></i>
+                            This one's tricky!
+                        </p>
+                        <h3 id="questionText" class="serif text-xl md:text-2xl font-semibold text-gray-800 leading-relaxed">
+                            Loading question...
+                        </h3>
+                    </div>
+                </div>
+
+                <!-- Options -->
+                <div id="optionsContainer" class="space-y-3">
+                    <!-- Options injected by JS -->
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="flex justify-between">
+                <button id="prevBtn" class="px-6 py-3 rounded-xl border-2 border-gray-300 text-gray-600 font-medium hover:border-amber-400 hover:text-amber-700 transition disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+                    <i data-lucide="arrow-left" class="w-4 h-4 inline mr-2"></i>
+                    Previous
+                </button>
+                <button id="nextBtn" class="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 text-white font-medium hover:from-amber-700 hover:to-amber-800 transition shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+                    Next
+                    <i data-lucide="arrow-right" class="w-4 h-4 inline ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Results Screen -->
+        <section id="resultsScreen" class="hidden py-8">
+            <div class="text-center mb-8">
+                <div id="scoreCircle" class="w-40 h-40 mx-auto rounded-full score-circle relative flex items-center justify-center mb-6" style="--score-deg: 0deg">
+                    <div class="w-32 h-32 bg-white rounded-full flex flex-col items-center justify-center">
+                        <span id="scoreNum" class="text-4xl font-bold text-gray-800">0</span>
+                        <span class="text-sm text-gray-500">/ 40</span>
+                    </div>
+                </div>
+                <h2 id="resultTitle" class="serif text-3xl font-bold text-gray-800 mb-2">Tournament Complete!</h2>
+                <p id="resultMessage" class="text-gray-600">Let's see how you performed...</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+                <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                    <i data-lucide="bar-chart-3" class="w-5 h-5 text-amber-600"></i>
+                    Section Breakdown
+                </h3>
+                <div id="sectionBreakdown" class="space-y-3">
+                    <!-- Breakdown injected by JS -->
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-4 justify-center">
+                <button id="reviewBtn" class="px-6 py-3 rounded-xl border-2 border-amber-600 text-amber-700 font-medium hover:bg-amber-50 transition">
+                    <i data-lucide="eye" class="w-4 h-4 inline mr-2"></i>
+                    Review Answers
+                </button>
+                <button id="masterListBtn" class="px-6 py-3 rounded-xl border-2 border-gray-300 text-gray-600 font-medium hover:border-amber-400 hover:text-amber-700 transition">
+                    <i data-lucide="book" class="w-4 h-4 inline mr-2"></i>
+                    Master List
+                </button>
+                <button id="retryBtn" class="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 text-white font-medium hover:from-amber-700 hover:to-amber-800 transition shadow-md">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4 inline mr-2"></i>
+                    Play Again
+                </button>
+            </div>
+        </section>
+
+        <!-- Review Screen -->
+        <section id="reviewScreen" class="hidden py-4">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="serif text-2xl font-bold text-gray-800">Answer Review</h2>
+                <button id="backFromReview" class="p-2 rounded-lg hover:bg-gray-100 transition">
+                    <i data-lucide="x" class="w-5 h-5 text-gray-600"></i>
+                </button>
+            </div>
+            <div id="reviewContainer" class="space-y-4">
+                <!-- Review items injected by JS -->
+            </div>
+        </section>
+
+        <!-- Master List Screen -->
+        <section id="masterListScreen" class="hidden py-4">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="serif text-2xl font-bold text-gray-800">Idiom Master List</h2>
+                <button id="backFromMaster" class="p-2 rounded-lg hover:bg-gray-100 transition">
+                    <i data-lucide="x" class="w-5 h-5 text-gray-600"></i>
+                </button>
+            </div>
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <p class="text-gray-600 mb-4 text-sm">A complete alphabetical reference of 45 chess-inspired idioms and their meanings.</p>
+                <div id="masterListContainer" class="grid md:grid-cols-2 gap-4">
+                    <!-- Master list injected by JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Info Modal -->
+    <div id="infoModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="serif text-xl font-bold">About This Quiz</h3>
+                <button onclick="closeInfo()" class="p-1 rounded-lg hover:bg-gray-100">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="prose prose-sm text-gray-600">
+                <p class="mb-3">Test your knowledge of English idioms derived from the strategic world of chess. This quiz features 40 questions across four difficulty tiers:</p>
+                <ul class="space-y-2 mb-4">
+                    <li><strong>Section 1:</strong> Classic Checkmates (1-10) — Essential chess expressions</li>
+                    <li><strong>Section 2:</strong> Middlegame Manoeuvres (11-25) — Strategic and nuanced idioms</li>
+                    <li><strong>Section 3:</strong> Endgame Expressions (26-35) — Final stages and outcomes</li>
+                    <li><strong>Section 4:</strong> Grandmaster's Gambit (36-40) — Rare, complex metaphors</li>
+                </ul>
+                <p>Each question presents either a definition challenge or a fill-in-the-blank scenario. Good luck, grandmaster!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-data.js"></script>
+    <script src="app.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+<script src="https://deepsite.hf.co/deepsite-badge.js"></script>
+</body>
+</html>
