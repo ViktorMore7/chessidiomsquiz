@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Your Language: The Ultimate Chess Idioms Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --chess-dark: #43352e;
+            --chess-light: #f0e6d2;
+            --chess-primary: #2c5f46;
+            --chess-accent: #d68c68;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f5f2;
+            color: #1f2937;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .chess-piece {
+            font-size: 1.5rem;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(to right, var(--chess-primary), #3b7a5f);
+        }
+        
+        .score-badge {
+            background: conic-gradient(
+                var(--chess-primary) 0% 100%,
+                #f0e6d2 0% 100%
+            );
+            background-size: 100% 100%;
+            background-origin: border-box;
+        }
+        
+        .board-pattern {
+            background-image: 
+                linear-gradient(45deg, #43352e 25%, transparent 25%), 
+                linear-gradient(-45deg, #43352e 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #43352e 75%), 
+                linear-gradient(-45deg, transparent 75%, #43352e 75%);
+            background-size: 30px 30px;
+            background-position: 0 0, 0 15px, 15px -15px, -15px 0px;
+        }
+        
+        .option-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .correct {
+            background-color: #d1fae5 !important;
+            border-color: #10b981 !important;
+            color: #065f46 !important;
+        }
+        
+        .incorrect {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-[#43352e] to-[#2c5f46] text-white py-8 px-4 shadow-lg">
+        <div class="container mx-auto max-w-4xl text-center">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <i data-lucide="chess-king" class="chess-piece text-yellow-300"></i>
+                <h1 class="text-3xl md:text-4xl font-bold tracking-tight">Check Your Language</h1>
+                <i data-lucide="chess-queen" class="chess-piece text-yellow-300"></i>
+            </div>
+            <p class="text-xl opacity-90 max-w-2xl mx-auto">The Ultimate Chess Idioms Quiz</p>
+            <p class="mt-2 text-sm opacity-75">Test your knowledge of English idioms derived from chess strategy</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto max-w-3xl px-4 py-8">
+        <!-- Quiz Container -->
+        <div id="quiz-container" class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            
+            <!-- Progress Bar -->
+            <div class="h-2 bg-gray-200">
+                <div id="progress-bar" class="h-full w-0 bg-gradient-to-r from-[#2c5f46] to-[#43352e] transition-all duration-500 ease-in-out"></div>
+            </div>
+            
+            <!-- Intro Section -->
+            <div id="intro-section" class="p-8 text-center">
+                <div class="mb-6">
+                    <i data-lucide="book-open" class="w-16 h-16 mx-auto text-[#2c5f46] mb-4"></i>
+                    <h2 class="text-2xl font-bold mb-4">Welcome to the Chess Idioms Quiz!</h2>
+                    <div class="max-w-2xl mx-auto text-gray-600">
+                        <p class="mb-4">This quiz will test your knowledge of English idioms derived from the game of chess. You'll face 40 questions across four sections:</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-6">
+                            <div class="bg-[#f8f5f2] p-3 rounded-lg">
+                                <div class="font-bold text-[#2c5f46] mb-1">Classic Checkmates</div>
+                                <div class="text-xs">Questions 1-10</div>
+                            </div>
+                            <div class="bg-[#f8f5f2] p-3 rounded-lg">
+                                <div class="font-bold text-[#d68c68] mb-1">Middlegame Manoeuvres</div>
+                                <div class="text-xs">Questions 11-25</div>
+                            </div>
+                            <div class="bg-[#f8f5f2] p-3 rounded-lg">
+                                <div class="font-bold text-[#7c3aed] mb-1">Endgame Expressions</div>
+                                <div class="text-xs">Questions 26-35</div>
+                            </div>
+                            <div class="bg-[#f8f5f2] p-3 rounded-lg">
+                                <div class="font-bold text-gray-700 mb-1">Grandmaster's Gambit</div>
+                                <div class="text-xs">Questions 36-40</div>
+                            </div>
+                        </div>
+                        <p>Each question is multiple-choice. You'll get immediate feedback and explanations after each answer.</p>
+                    </div>
+                </div>
+                <button id="start-btn" class="bg-[#2c5f46] hover:bg-[#3b7a5f] text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    Start the Quiz
+                </button>
+            </div>
+
+            <!-- Question Container -->
+            <div id="question-container" class="hidden p-6 md:p-8">
+                <!-- Section Header -->
+                <div id="section-header" class="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 id="section-title" class="text-lg font-semibold text-[#2c5f46]"></h3>
+                        <p id="section-subtitle" class="text-sm text-gray-500"></p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-[#f8f5f2] text-gray-700 px-3 py-1 rounded-full text-sm">
+                            Question <span id="current-question-num">1</span> of 40
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Question -->
+                <div id="question-text" class="text-xl font-medium mb-8 leading-relaxed">
+                    <!-- Question text will be inserted here -->
+                </div>
+
+                <!-- Options -->
+                <div id="options-container" class="grid gap-4">
+                    <!-- Options will be generated here -->
+                </div>
+
+                <!-- Feedback Section -->
+                <div id="feedback-section" class="hidden mt-6">
+                    <div id="feedback-content" class="bg-[#f8f5f2] rounded-xl p-6 border-l-4">
+                        <div class="flex items-start">
+                            <i id="feedback-icon" class="w-6 h-6 mt-1"></i>
+                            <div class="ml-3">
+                                <h4 id="feedback-title" class="font-bold text-lg mb-2"></h4>
+                                <p id="feedback-text" class="text-gray-700"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-end">
+                        <button id="next-btn" class="bg-[#2c5f46] hover:bg-[#3b7a5f] text-white font-bold py-2 px-6 rounded-lg transition-all duration-300">
+                            Next Question
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results-section" class="hidden p-8 text-center">
+                <i data-lucide="award" class="w-24 h-24 mx-auto text-[#d68c68] mb-6"></i>
+                <h2 class="text-3xl font-bold mb-2">Quiz Complete!</h2>
+                <p class="text-gray-600 mb-6">Here's your performance summary:</p>
+                
+                <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-8">
+                    <div class="relative w-32 h-32 flex items-center justify-center">
+                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                            <circle class="text-gray-200" stroke-width="8" stroke="currentColor" fill="transparent" r="42" cx="50" cy="50"></circle>
+                            <circle id="score-circle" class="text-[#2c5f46]" stroke-width="8" stroke-dasharray="264" stroke-dashoffset="264" stroke-linecap="round" stroke="currentColor" fill="transparent" r="42" cx="50" cy="50"></circle>
+                        </svg>
+                        <div class="absolute flex flex-col items-center">
+                            <span id="score-percent" class="text-4xl font-bold text-[#2c5f46]"></span>
+                            <span class="text-sm text-gray-500">Score</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-left">
+                        <h3 class="font-bold text-xl mb-3">Your Results</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <i data-lucide="circle-check" class="w-5 h-5 text-[#10b981] mr-2"></i>
+                                <span class="text-gray-700">Questions Correct: <span id="correct-count" class="font-bold"></span>/40</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i data-lucide="circle-alert" class="w-5 h-5 text-[#ef4444] mr-2"></i>
+                                <span class="text-gray-700">Wrong Answers: <span id="wrong-count" class="font-bold"></span></span>
+                            </div>
+                            <div class="flex items-center">
+                                <i data-lucide="zap" class="w-5 h-5 text-[#f59e0b] mr-2"></i>
+                                <span class="text-gray-700">Sections Completed: <span id="sections-count" class="font-bold">0</span>/4</span>
+                            </div>
+                        </div>
+                        <div id="performance-badge" class="mt-4 p-3 bg-[#f8f5f2] rounded-lg inline-block">
+                            <span class="font-bold text-lg"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-4 justify-center">
+                    <button id="review-btn" class="bg-[#2c5f46] hover:bg-[#3b7a5f] text-white font-bold py-3 px-8 rounded-lg transition-all duration-300">
+                        Review Answers
+                    </button>
+                    <button id="restart-btn" class="bg-[#d68c68] hover:bg-[#e89c7c] text-white font-bold py-3 px-8 rounded-lg transition-all duration-300">
+                        Take Quiz Again
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Answer Key & Master List -->
+            <div id="answer-key-section" class="hidden bg-[#f8f5f2] p-6 md:p-8">
+                <h2 class="text-2xl font-bold mb-6 text-center text-[#2c5f46]">Answer Key & Idiom Master List</h2>
+                
+                <!-- Answer Key -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold mb-4 border-b pb-2">Answer Key</h3>
+                    <div id="answer-key" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                        <!-- Answer key items will be generated here -->
+                    </div>
+                </div>
+                
+                <!-- Idiom Master List -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 border-b pb-2">Idiom Master List</h3>
+                    <div id="idiom-list" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <!-- Idiom list items will be generated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        // Quiz Data
+        const quizData = [
+            // Section 1: Classic Checkmates (Questions 1-10)
+            {
+                section: 1,
+                number: 1,
+                type: "definition",
+                question: "What does the idiom 'to be a pawn in someone’s game' mean?",
+                options: [
+                    "To be the most important player in a strategic situation",
+                    "To be used or manipulated by someone else for their own purposes",
+                    "To play a neutral role in a conflict",
+                    "To win a game through clever tactics"
+                ],
+                correct: 1,
+                explanation: "A pawn is the most expendable piece in chess, often sacrificed for strategy. Metaphorically, it means you're being used by someone more powerful."
+            },
+            {
+                section: 1,
+                number: 2,
+                type: "definition",
+                question: "What is the meaning of 'checkmate'?",
+                options: [
+                    "A situation where someone has been completely defeated or has no more options",
+                    "A defensive move in a game",
+                    "The beginning of a strategic plan",
+                    "A temporary victory that is later lost"
+                ],
+                correct: 0,
+                explanation: "In chess, checkmate ends the game. Figuratively, it means total defeat or being left with no alternatives."
+            },
+            {
+                section: 1,
+                number: 3,
+                type: "definition",
+                question: "What does 'a chess game' metaphorically represent?",
+                options: [
+                    "A simple situation requiring basic thinking",
+                    "A complex situation that requires strategic planning and careful thinking",
+                    "A competition based on pure luck",
+                    "A series of random events with no strategy"
+                ],
+                correct: 1,
+                explanation: "Like a chess game, such situations require foresight, planning, and strategic thinking to navigate successfully."
+            },
+            {
+                section: 1,
+                number: 4,
+                type: "definition",
+                question: "What does 'to make the first move' mean?",
+                options: [
+                    "To surrender in a difficult situation",
+                    "To take the initiative in a situation",
+                    "To analyze a situation before acting",
+                    "To make a reckless decision"
+                ],
+                correct: 1,
+                explanation: "In chess, the first move determines the opening strategy. Figuratively, it means taking the lead or initiative in any situation."
+            },
+            {
+                section: 1,
+                number: 5,
+                type: "definition",
+                question: "What does 'back to square one' mean?",
+                options: [
+                    "To reach a successful conclusion",
+                    "To advance to a more complex stage",
+                    "To return to the beginning or to start over",
+                    "To analyze the final outcome"
+                ],
+                correct: 2,
+                explanation: "In chess, returning to square one might mean undoing a poor opening. Figuratively, it means starting again from the beginning."
+            },
+            {
+                section: 1,
+                number: 6,
+                type: "definition",
+                question: "What does 'it’s your move' mean metaphorically?",
+                options: [
+                    "It’s time to surrender",
+                    "It’s your turn to make a decision or take action",
+                    "Someone else should handle the situation",
+                    "The situation requires no action"
+                ],
+                correct: 1,
+                explanation: "In chess, it’s literally your turn to play. Figuratively, it means it’s your turn to act or make a decision."
+            },
+            {
+                section: 1,
+                number: 7,
+                type: "definition",
+                question: "What does 'a strategic move' mean?",
+                options: [
+                    "A random action without purpose",
+                    "A carefully planned action to achieve a long-term goal",
+                    "A defensive reaction",
+                    "An immediate solution to a problem"
+                ],
+                correct: 1,
+                explanation: "Like a move in chess that serves a larger plan, this refers to any action designed to achieve long-term objectives."
+            },
+            {
+                section: 1,
+                number: 8,
+                type: "blank",
+                question: "After the scandal, the CEO had no choice but to ________ and resign.",
+                options: [
+                    "castle his position",
+                    "play both sides",
+                    "resign himself to his fate",
+                    "go for the gold"
+                ],
+                correct: 2,
+                explanation: "'To resign oneself to something' means to reluctantly accept an undesirable situation, just as a chess player resigns a lost game."
+            },
+            {
+                section: 1,
+                number: 9,
+                type: "definition",
+                question: "What does 'to be in check' mean metaphorically?",
+                options: [
+                    "To be completely safe from danger",
+                    "To be under pressure, threat, or scrutiny that demands a response",
+                    "To be in control of a situation",
+                    "To be at the beginning of a process"
+                ],
+                correct: 1,
+                explanation: "In chess, you're 'in check' when your king is under direct attack, requiring an immediate response. Figuratively, it means facing pressure or threats."
+            },
+            {
+                section: 1,
+                number: 10,
+                type: "definition",
+                question: "What is the meaning of '(a system of) checks and balances'?",
+                options: [
+                    "A system where different powers control each other to prevent any one from becoming too strong",
+                    "A chess strategy focused on defense",
+                    "The beginning of a game",
+                    "A method for counting chess pieces"
+                ],
+                correct: 0,
+                explanation: "This political concept comes from chess, where pieces can check each other. It means preventing any one branch of government from becoming too powerful."
+            },
+            
+            // Section 2: Middlegame Manoeuvres (Questions 11-25)
+            {
+                section: 2,
+                number: 11,
+                type: "definition",
+                question: "What does 'to be in stalemate' mean?",
+                options: [
+                    "To be in a deadlock or situation where no progress can be made by either side",
+                    "To have a decisive advantage",
+                    "To be making rapid progress",
+                    "To be in a position to win"
+                ],
+                correct: 0,
+                explanation: "In chess, stalemate ends the game in a draw because the player has no legal moves. Figuratively, it means a standoff where no progress is possible."
+            },
+            {
+                section: 2,
+                number: 12,
+                type: "definition",
+                question: "What does 'the endgame' metaphorically refer to?",
+                options: [
+                    "The beginning of a process",
+                    "The final stage of a process, where decisive actions are taken to secure an outcome",
+                    "The中期 phase of a project",
+                    "A preliminary discussion"
+                ],
+                correct: 1,
+                explanation: "In chess, the endgame is the final phase where players try to secure victory. Figuratively, it means the final stage requiring decisive actions."
+            },
+            {
+                section: 2,
+                number: 13,
+                type: "definition",
+                question: "What is an 'opening gambit'?",
+                options: [
+                    "A defensive strategy in chess",
+                    "An initial move or remark that involves a calculated risk to gain a later advantage",
+                    "A mistake made at the beginning",
+                    "A guaranteed winning strategy"
+                ],
+                correct: 1,
+                explanation: "In chess, gambits involve sacrificing material for positional advantage. Figuratively, it's a risky initial move for future gain."
+            },
+            {
+                section: 2,
+                number: 14,
+                type: "definition",
+                question: "What does 'a pawn sacrifice' mean?",
+                options: [
+                    "Losing a minor asset to achieve a greater strategic goal",
+                    "A betrayal by a trusted advisor",
+                    "The final loss in a conflict",
+                    "A defensive maneuver"
+                ],
+                correct: 0,
+                explanation: "In chess, pawn sacrifices aim for strategic advantage. Figuratively, it means letting go of something minor to gain something greater."
+            },
+            {
+                section: 2,
+                number: 15,
+                type: "definition",
+                question: "What is a 'queen sacrifice'?",
+                options: [
+                    "A small concession for future gain",
+                    "A dramatic and costly sacrifice for a potentially game-winning advantage",
+                    "A defensive move",
+                    "A tactical error"
+                ],
+                correct: 1,
+                explanation: "In chess, sacrificing your most powerful piece is rare and daring. Figuratively, it means making a huge sacrifice for potential victory."
+            },
+            {
+                section: 2,
+                number: 16,
+                type: "definition",
+                question: "What does 'to move the pieces (behind the scenes)' mean?",
+                options: [
+                    "To play chess secretly",
+                    "To control events secretly from a position of power",
+                    "To retire from a position",
+                    "To change strategies frequently"
+                ],
+                correct: 1,
+                explanation: "Like a chess master directing pieces, this means controlling events from a position of power without taking the public spotlight."
+            },
+            {
+                section: 2,
+                number: 17,
+                type: "definition",
+                question: "What is a 'kingmaker'?",
+                options: [
+                    "The most powerful chess player",
+                    "A person or group with the power to decide who will win a contest for leadership",
+                    "The leader of a chess club",
+                    "A chess piece that decides games"
+                ],
+                correct: 1,
+                explanation: "In chess, the king can't make moves alone—it needs support. Figuratively, it's someone who determines leadership outcomes without seeking power."
+            },
+            {
+                section: 2,
+                number: 18,
+                type: "definition",
+                question: "What does 'to castle (into safety)' mean metaphorically?",
+                options: [
+                    "To build a physical fortress",
+                    "To seek shelter or consolidate one's position, often quickly",
+                    "To surrender to an opponent",
+                    "To expand your territory"
+                ],
+                correct: 1,
+                explanation: "In chess, castling moves the king to safety. Figuratively, it means seeking security or consolidating one's position."
+            },
+            {
+                section: 2,
+                number: 19,
+                type: "definition",
+                question: "What does 'to promote' (a pawn to a queen) mean?",
+                options: [
+                    "To demote someone",
+                    "To elevate a humble beginning or a junior person to a position of great power",
+                    "To maintain the status quo",
+                    "To begin a project"
+                ],
+                correct: 1,
+                explanation: "In chess, promoting a pawn transforms it into a more powerful piece. Figuratively, it means advancing someone or something significantly."
+            },
+            {
+                section: 2,
+                number: 20,
+                type: "blank",
+                question: "The negotiations reached a ________ with both sides refusing to compromise.",
+                options: [
+                    "checkmate",
+                    "stalemate",
+                    "check",
+                    "en passant"
+                ],
+                correct: 1,
+                explanation: "A stalemate occurs when neither side can make progress. Here, negotiations are stuck with no resolution in sight."
+            },
+            {
+                section: 2,
+                number: 21,
+                type: "definition",
+                question: "What does 'a forced move' mean?",
+                options: [
+                    "A voluntary action",
+                    "An action one is compelled to take, with no better alternatives",
+                    "A strategic choice",
+                    "A random decision"
+                ],
+                correct: 1,
+                explanation: "In chess, a forced move leaves no better alternatives. Figuratively, it's an action you must take due to circumstances."
+            },
+            {
+                section: 2,
+                number: 22,
+                type: "definition",
+                question: "What is a 'brilliant move'?",
+                options: [
+                    "A reckless action",
+                    "An exceptionally clever and effective action",
+                    "A defensive maneuver",
+                    "A lucky break"
+                ],
+                correct: 1,
+                explanation: "In chess, brilliant moves involve extraordinary insight. Figuratively, it's an exceptionally clever solution."
+            },
+            {
+                section: 2,
+                number: 23,
+                type: "definition",
+                question: "What does 'a blunder' mean?",
+                options: [
+                    "A carefully calculated risk",
+                    "A stupid or careless mistake",
+                    "A strategic sacrifice",
+                    "An unexpected advantage"
+                ],
+                correct: 1,
+                explanation: "In chess, a blunder is a major mistake. Figuratively, it's any foolish or careless error."
+            },
+            {
+                section: 2,
+                number: 24,
+                type: "definition",
+                question: "What does 'to play for a draw' mean?",
+                options: [
+                    "To aim for victory at all costs",
+                    "To adopt a strategy aimed at achieving a tie or neutral outcome",
+                    "To give up the game",
+                    "To focus on defense rather than offense"
+                ],
+                correct: 1,
+                explanation: "In chess, playing for a draw is accepting a tie. Figuratively, it means seeking a neutral outcome rather than victory."
+            },
+            {
+                section: 2,
+                number: 25,
+                type: "definition",
+                question: "What does 'to counter-attack' mean?",
+                options: [
+                    "To surrender",
+                    "To respond to an attack with an attack of one's own",
+                    "To strengthen defenses",
+                    "To negotiate peace"
+                ],
+                correct: 1,
+                explanation: "In chess, counter-attacking means responding to an attack by launching your own. Figuratively, it's hitting back when attacked."
+            },
+            
+            // Section 3: Endgame Expressions (Questions 26-35)
+            {
+                section: 3,
+                number: 26,
+                type: "definition",
+                question: "What does 'a brilliant combination' mean?",
+                options: [
+                    "A single lucky move",
+                    "A sequence of coordinated actions leading to a successful outcome",
+                    "A defensive strategy",
+                    "A random series of events"
+                ],
+                correct: 1,
+                explanation: "In chess, combinations are sequences of moves. Figuratively, it's a carefully orchestrated plan achieving success."
+            },
+            {
+                section: 3,
+                number: 27,
+                type: "definition",
+                question: "What does 'in time trouble' / 'time pressure' mean?",
+                options: [
+                    "Having unlimited time to make decisions",
+                    "Working against a tight deadline, leading to rushed decisions",
+                    "Taking too long to make a decision",
+                    "Running out of opportunities"
+                ],
+                correct: 1,
+                explanation: "In chess, time trouble means racing against the clock. Figuratively, it's being under tight deadlines that cause rushing."
+            },
+            {
+                section: 3,
+                number: 28,
+                type: "definition",
+                question: "What does 'to have the initiative' mean?",
+                options: [
+                    "To be on the defensive",
+                    "To be the one directing the course of events, forcing others to react",
+                    "To have lost control",
+                    "To be following others' lead"
+                ],
+                correct: 1,
+                explanation: "In chess, having the initiative means forcing your opponent to respond. Figuratively, it means controlling the direction of events."
+            },
+            {
+                section: 3,
+                number: 29,
+                type: "definition",
+                question: "What does 'to have a positional advantage' mean?",
+                options: [
+                    "To have an immediate winning opportunity",
+                    "To have a better overall setup or long-term strategic footing",
+                    "To be ahead in score",
+                    "To have better pieces"
+                ],
+                correct: 1,
+                explanation: "In chess, positional advantage means superior long-term setup. Figuratively, it means having better strategic positioning."
+            },
+            {
+                section: 3,
+                number: 30,
+                type: "definition",
+                question: "What does 'to play both sides (against the middle)' mean?",
+                options: [
+                    "To play chess with two opponents",
+                    "To secretly support or encourage opposing parties for one's own benefit",
+                    "To remain neutral",
+                    "To switch sides in a conflict"
+                ],
+                correct: 1,
+                explanation: "In chess, playing both sides would be cheating. Figuratively, it means manipulating opposing sides for personal gain."
+            },
+            {
+                section: 3,
+                number: 31,
+                type: "definition",
+                question: "What does 'to sweep the board' mean?",
+                options: [
+                    "To clean up after a chess game",
+                    "To win decisively, taking everything",
+                    "To draw the game",
+                    "To lose all pieces"
+                ],
+                correct: 1,
+                explanation: "In chess, sweeping the board means winning completely. Figuratively, it's total victory or success."
+            },
+            {
+                section: 3,
+                number: 32,
+                type: "definition",
+                question: "What does 'a grandmaster of (deception/politics/etc.)' mean?",
+                options: [
+                    "A beginner in chess",
+                    "An absolute expert in a particular field requiring strategy",
+                    "A chess tournament organizer",
+                    "A novice player"
+                ],
+                correct: 1,
+                explanation: "Grandmaster is chess's highest title. Figuratively, it means mastery in any field requiring strategic thinking."
+            },
+            {
+                section: 3,
+                number: 33,
+                type: "definition",
+                question: "What is a 'political/corporate chessboard'?",
+                options: [
+                    "A literal chessboard used in politics",
+                    "The complex landscape of a competitive environment where many players interact strategically",
+                    "A chess club for politicians",
+                    "A method of counting votes"
+                ],
+                correct: 1,
+                explanation: "Like a chessboard with interacting pieces, this metaphor describes competitive environments where players strategize."
+            },
+            {
+                section: 3,
+                number: 34,
+                type: "definition",
+                question: "What does 'to move up the rank(s)' mean?",
+                options: [
+                    "To change chess pieces",
+                    "To achieve a higher position within a hierarchy",
+                    "To demote someone",
+                    "To leave a position"
+                ],
+                correct: 1,
+                explanation: "In chess, moving up ranks refers to pawn promotion. Figuratively, it means advancing in status or position."
+            },
+            {
+                section: 3,
+                number: 35,
+                type: "blank",
+                question: "After years of preparation, the company was ready to ________ and launch its new product.",
+                options: [
+                    "play for a draw",
+                    "castle its position",
+                    "launch its endgame",
+                    "sacrifice its queen"
+                ],
+                correct: 2,
+                explanation: "In chess, the endgame is when you secure victory. Here, it means launching the final stage of preparation."
+            },
+            
+            // Section 4: Grandmaster's Gambit (Questions 36-40)
+            {
+                section: 4,
+                number: 36,
+                type: "definition",
+                question: "What is a 'poisoned pawn'?",
+                options: [
+                    "A pawn that gives a tactical advantage",
+                    "An offer or opportunity that is tempting but, if accepted, leads to ruin",
+                    "A pawn that controls the center",
+                    "A pawn that cannot be captured"
+                ],
+                correct: 1,
+                explanation: "In chess, a poisoned pawn tempts but leads to disadvantage. Figuratively, it's something appealing that causes harm if accepted."
+            },
+            {
+                section: 4,
+                number: 37,
+                type: "definition",
+                question: "What is a 'zwischenzug' ('in-between move')?",
+                options: [
+                    "A mistake made in the endgame",
+                    "A clever, unexpected intermediate action that changes the situation before returning to the main issue",
+                    "A defensive move",
+                    "A resignation tactic"
+                ],
+                correct: 1,
+                explanation: "In chess, it's an unexpected move that changes the sequence. Figuratively, it's an unexpected action that disrupts plans."
+            },
+            {
+                section: 4,
+                number: 38,
+                type: "definition",
+                question: "What does 'to undermine a pawn structure' mean?",
+                options: [
+                    "To strengthen your position",
+                    "To gradually weaken the foundation of an opponent's argument or position",
+                    "To attack the center directly",
+                    "To sacrifice pawns"
+                ],
+                correct: 1,
+                explanation: "In chess, undermining weakens pawn structure. Figuratively, it's weakening an opponent's base of support."
+            },
+            {
+                section: 4,
+                number: 39,
+                type: "definition",
+                question: "What does 'to lose on time' mean?",
+                options: [
+                    "To be defeated through superior tactics",
+                    "To fail because time ran out, not because you were inherently beaten",
+                    "To run out of moves",
+                    "To delay too long"
+                ],
+                correct: 1,
+                explanation: "In chess, losing on time means the clock ran out. Figuratively, it's failing due to time pressure rather than lack of ability."
+            },
+            {
+                section: 4,
+                number: 40,
+                type: "definition",
+                question: "(This one's tricky!) What does 'to adjourn a game' mean?",
+                options: [
+                    "To end a game decisively",
+                    "To pause a lengthy conflict or negotiation, with plans to resume",
+                    "To forfeit the game",
+                    "To change the rules of the game"
+                ],
+                correct: 1,
+                explanation: "In chess, adjournment pauses a game. Figuratively, it's suspending a conflict or negotiation to continue later."
+            }
+        ];
+
+        // Idiom Master List
+        const idiomList = [
+            { idiom: "a blunder", definition: "A stupid or careless mistake" },
+            { idiom: "a brilliant combination", definition: "A sequence of coordinated actions leading to a successful outcome" },
+            { idiom: "a brilliant move", definition: "An exceptionally clever and effective action" },
+            { idiom: "a chess game", definition: "A complex situation that requires strategic planning and careful thinking" },
+            { idiom: "a chessboard", definition: "The complex landscape of a competitive environment where many players interact strategically" },
+            { idiom: "a dark-horse bishop / a powerful rook", definition: "A person or element whose true power or influence is underestimated or becomes apparent later" },
+            { idiom: "a forced move", definition: "An action one is compelled to take, with no better alternatives" },
+            { idiom: "a gambit", definition: "An initial move or remark that involves a calculated risk to gain a later advantage" },
+            { idiom: "a grandmaster of [something]", definition: "An absolute expert in a particular field requiring strategy" },
+            { idiom: "a kingmaker", definition: "A person or group with the power to decide who will win a contest for leadership" },
+            { idiom: "a passage pawn", definition: "An individual or project that has overcome obstacles and is on a clear path to success" },
+            { idiom: "a pawn in someone's game", definition: "To be used or manipulated by someone else for their own purposes" },
+            { idiom: "a pawn sacrifice", definition: "Deliberately allowing a minor asset to be lost to achieve a greater strategic goal" },
+            { idiom: "a poisoned pawn", definition: "An offer or opportunity that is tempting but leads to ruin" },
+            { idiom: "a positional advantage", definition: "To have a better overall setup or long-term strategic footing" },
+            { idiom: "a queen sacrifice", definition: "A dramatic and costly sacrifice for a potentially game-winning advantage" },
+            { idiom: "a strategic move", definition: "A carefully planned action to achieve a long-term goal" },
+            { idiom: "back to square one", definition: "To return to the beginning or to start over" },
+            { idiom: "check and balance", definition: "A system where different powers control each other to prevent any one from becoming too strong" },
+            { idiom: "checkmate", definition: "A situation where someone has been completely defeated or has no more options" },
+            { idiom: "endgame", definition: "The final stage of a process, where decisive actions are taken to secure an outcome" },
+            { idiom: "for a draw", definition: "To adopt a strategy aimed at achieving a tie or neutral outcome" },
+            { idiom: "for a win", definition: "To aim for complete victory" },
+            { idiom: "grandmaster of [something]", definition: "An absolute expert in a particular field requiring strategy" },
+            { idiom: "in check", definition: "To be under pressure, threat, or scrutiny that demands a response" },
+            { idiom: "in time trouble", definition: "Working against a tight deadline, leading to rushed decisions" },
+            { idiom: "it's your move", definition: "It's someone's turn to make a decision or take action" },
+            { idiom: "make the first move", definition: "To take the initiative in a situation" },
+            { idiom: "move up the ranks", definition: "To achieve a higher position within a hierarchy" },
+            { idiom: "on the defensive", definition: "To be forced to react to problems or attacks rather than controlling events" },
+            { idiom: "pawn structure", definition: "The arrangement of pawns that forms the foundation of a position" },
+            { idiom: "play both sides", definition: "To secretly support or encourage opposing parties for one's own benefit" },
+            { idiom: "play for a draw", definition: "To adopt a strategy aimed at achieving a tie or neutral outcome" },
+            { idiom: "promote a pawn", definition: "To elevate a humble beginning or a junior person to a position of great power" },
+            { idiom: "resign oneself to something", definition: "To reluctantly accept something undesirable because one cannot change it" },
+            { idiom: "sweep the board", definition: "To win decisively, taking everything" },
+            { idiom: "the endgame", definition: "The final stage of a process, where decisive actions are taken to secure an outcome" },
+            { idiom: "the initiative", definition: "To be the one directing the course of events, forcing others to react" },
+            { idiom: "to adjourn a game", definition: "To pause a lengthy conflict or negotiation, with plans to resume" },
+            { idiom: "to be a pawn", definition: "To be used or manipulated by someone else for their own purposes" },
+            { idiom: "to be in check", definition: "To be under pressure, threat, or scrutiny that demands a response" },
+            { idiom: "to be in stalemate", definition: "To be in a deadlock or situation where no progress can be made by either side" },
+            { idiom: "to castle", definition: "To seek shelter or consolidate one's position, often quickly" },
+            { idiom: "to counter-attack", definition: "To respond to an attack with an attack of one's own" },
+            { idiom: "to fork someone", definition: "To present someone with two equally undesirable choices" },
+            { idiom: "to have a positional advantage", definition: "To have a better overall setup or long-term strategic footing" },
+            { idiom: "to have the initiative", definition: "To be the one directing the course of events, forcing others to react" },
+            { idiom: "to launch the endgame", definition: "To begin the final phase that will secure victory" },
+            { idiom: "to lose on time", definition: "To fail because time ran out, not because you were inherently beaten" },
+            { idiom: "to move the pieces", definition: "To control events secretly from a position of power" },
+            { idiom: "to promote", definition: "To elevate a humble beginning or a junior person to a position of great power" },
+            { idiom: "to resign oneself", definition: "To reluctantly accept something undesirable because one cannot change it" },
+            { idiom: "to sweep the board", definition: "To win decisively, taking everything" },
+            { idiom: "to be a grandmaster", definition: "To be an absolute expert in a particular field requiring strategy" },
+            { idiom: "zwischenzug", definition: "A clever, unexpected intermediate action that changes the situation before returning to the main issue" }
+        ];
+
+        // State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        let currentSection = 1;
+
+        // DOM Elements
+        const introSection = document.getElementById('intro-section');
+        const questionContainer = document.getElementById('question-container');
+        const resultsSection = document.getElementById('results-section');
+        const answerKeySection = document.getElementById('answer-key-section');
+        const startBtn = document.getElementById('start-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const reviewBtn = document.getElementById('review-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const progressBar = document.getElementById('progress-bar');
+        
+        // Initialize
+        lucide.createIcons();
+
+        // Event Listeners
+        startBtn.addEventListener('click', startQuiz);
+        nextBtn.addEventListener('click', () => {
+            userAnswers.push(currentQuestionIndex);
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                renderQuestion();
+                updateProgress();
+            } else {
+                showResults();
+            }
+        });
+        reviewBtn.addEventListener('click', () => {
+            resultsSection.classList.add('hidden');
+            answerKeySection.classList.remove('hidden');
+            answerKeySection.scrollIntoView({ behavior: 'smooth' });
+        });
+        restartBtn.addEventListener('click', () => {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            resultsSection.classList.add('hidden');
+            introSection.classList.remove('hidden');
+            introSection.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Functions
+        function startQuiz() {
+            introSection.classList.add('hidden');
+            questionContainer.classList.remove('hidden');
+            questionContainer.classList.add('fade-in');
+            renderQuestion();
+            updateProgress();
+        }
+
+        function renderQuestion() {
+            const question = quizData[currentQuestionIndex];
+            
+            // Update section header
+            const sectionTitles = {
+                1: "Classic Checkmates",
+                2: "Middlegame Manoeuvres",
+                3: "Endgame Expressions",
+                4: "Grandmaster's Gambit"
+            };
+            
+            const sectionSubtitles = {
+                1: "Fundamental chess idioms",
+                2: "Strategic moves and tactics",
+                3: "Outcomes and final decisions",
+                4: "Complex metaphors and advanced concepts"
+            };
+
+            document.getElementById('section-title').textContent = sectionTitles[question.section];
+            document.getElementById('section-subtitle').textContent = sectionSubtitles[question.section];
+            document.getElementById('current-question-num').textContent = question.number;
+            
+            // Update question text
+            const questionEl = document.getElementById('question-text');
+            if (question.type === 'blank') {
+                questionEl.innerHTML = `<span>${question.question}</span>`;
+            } else {
+                questionEl.innerHTML = `<span>${question.question}</span>`;
+            }
+            
+            // Clear and create options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionEl = document.createElement('div');
+                optionEl.className = "option-card p-4 rounded-xl border border-gray-200 bg-white cursor-pointer transition-all duration-300";
+                optionEl.innerHTML = `
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-[#f8f5f2] flex items-center justify-center font-bold text-[#2c5f46] mr-3 mt-1">
+                            ${String.fromCharCode(65 + index)}
+                        </div>
+                        <div class="pt-1">
+                            <p class="text-gray-700">${option}</p>
+                        </div>
+                    </div>
+                `;
+                
+                optionEl.addEventListener('click', () => selectOption(index, optionEl));
+                optionsContainer.appendChild(optionEl);
+            });
+            
+            // Reset feedback
+            document.getElementById('feedback-section').classList.add('hidden');
+        }
+
+        function selectOption(selectedIndex, optionEl) {
+            const question = quizData[currentQuestionIndex];
+            const options = document.querySelectorAll('#options-container > div');
+            
+            // Disable all options
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                if (opt === optionEl) {
+                    if (selectedIndex === question.correct) {
+                        opt.classList.add('correct');
+                        score++;
+                    } else {
+                        opt.classList.add('incorrect');
+                    }
+                } else if (parseInt(opt.innerText.split('A')[0].trim()) === question.correct + 1) {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            // Show feedback
+            const feedbackSection = document.getElementById('feedback-section');
+            const feedbackContent = document.getElementById('feedback-content');
+            const feedbackTitle = document.getElementById('feedback-title');
+            const feedbackText = document.getElementById('feedback-text');
+            const feedbackIcon = document.getElementById('feedback-icon');
+            
+            feedbackSection.classList.remove('hidden');
+            
+            if (selectedIndex === question.correct) {
+                feedbackContent.classList.remove('bg-[#fee2e2]', 'border-red-500');
+                feedbackContent.classList.add('bg-[#d1fae5]', 'border-green-500');
+                feedbackTitle.textContent = "Correct!";
+                feedbackText.textContent = question.explanation;
+                feedbackIcon.innerHTML = '<i data-lucide="circle-check" class="text-green-600 w-6 h-6"></i>';
+            } else {
+                feedbackContent.classList.remove('bg-[#d1fae5]', 'border-green-500');
+                feedbackContent.classList.add('bg-[#fee2e2]', 'border-red-500');
+                feedbackTitle.textContent = "Incorrect";
+                feedbackText.textContent = question.explanation;
+                feedbackIcon.innerHTML = '<i data-lucide="circle-alert" class="text-red-600 w-6 h-6"></i>';
+            }
+            
+            lucide.createIcons();
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        function showResults() {
+            questionContainer.classList.add('hidden');
+            resultsSection.classList.remove('hidden');
+            resultsSection.classList.add('fade-in');
+            
+            // Calculate percentage
+            const percentage = Math.round((score / quizData.length) * 100);
+            
+            // Update score circle
+            const scoreCircle = document.getElementById('score-circle');
+            const circumference = 2 * Math.PI * 42; // 2 * π * r
+            const offset = circumference - (percentage / 100) * circumference;
+            scoreCircle.style.strokeDashoffset = offset;
+            
+            // Update text
+            document.getElementById('score-percent').textContent = `${percentage}%`;
+            document.getElementById('correct-count').textContent = score;
+            document.getElementById('wrong-count').textContent = quizData.length - score;
+            
+            // Update sections
+            const sectionsCompleted = new Set(quizData.slice(0, currentQuestionIndex + 1).map(q => q.section)).size;
+            document.getElementById('sections-count').textContent = sectionsCompleted;
+            
+            
+            const answerKeyContainer = document.getElementById('answer-key');
+            const idiomListContainer = document.getElementById('idiom-list');
+            
+            
+    </script>
+<script src="https://deepsite.hf.co/deepsite-badge.js"></script>
+</body>
+</html>
